@@ -1,0 +1,30 @@
+cd ~/labs
+git clone https://github.com/Bio312/lab6-L2AnyaJustin
+cd lab6-L2AnyaJustin
+cd ~/tools
+git clone git://github.com/tjunier/newick_utils.git
+cd newick_utils/
+autoreconf -fi
+./configure
+make
+sudo make install
+nw_display -h
+cd ~/labs/lab6-L2AnyaJustin
+cp ../lab5-L2AnyaJustin/maguk.blastp.detail.filtered.aligned.fas
+cp ../lab5-L2AnyaJustin/maguk.blastp.detail.filtered.aligned.fas.
+cp ../lab5-L2AnyaJustin/maguk.blastp.detail.filtered.aligned.fas .
+sed "s/ /_/g" maguk.blastp.detail.filtered.aligned.fas > maguk.blastp.detail.filtered.aligned_.fas
+iqtree -s maguk.blastp.detail.filtered.aligned_.fas -nt 2
+less maguk.blastp.detail.filtered.aligned_.fas.iqtree
+nw_display maguk.blastp.detail.filtered.aligned_.fas.treefile
+gotree draw png -w 1000 -i maguk.blastp.detail.filtered.aligned_.fas.treefile  -r -o  maguk.blastp.detail.filtered.aligned_.fas.treefile.r.png
+nw_display   maguk.blastp.detail.filtered.aligned_.fas.midpoint.treefile 
+gotree reroot midpoint -i maguk.blastp.detail.filtered.aligned_.fas.treefile -o maguk.blastp.detail.filtered.aligned_.fas.midpoint.treefile
+nw_display   maguk.blastp.detail.filtered.aligned_.fas.midpoint.treefile 
+nw_display -s  maguk.blastp.detail.filtered.aligned_.fas.midpoint.treefile -w 1000 -b 'opacity:0' >  maguk.blastp.detail.filtered.aligned_.fas.midpoint.treefile.svg
+sed "s/ /_/g" maguk.blastp.detail.filtered.aligned.fas > maguk.blastp.detail.filtered.aligned_.fas
+iqtree -s maguk.blastp.detail.filtered.aligned_.fas -nt 2
+gotree reroot midpoint -i maguk.blastp.detail.filtered.aligned_.fas.treefile -o maguk.blastp.detail.filtered.aligned_.fas.midpoint.treefile
+nw_display -s  maguk.blastp.detail.filtered.aligned_.fas.midpoint.treefile -w 1000 -b 'opacity:0' >  maguk.blastp.detail.filtered.aligned_.fas.midpoint.treefile.svg
+history > lab5.commandhistory.txt
+history > lab5.mygene.txt
