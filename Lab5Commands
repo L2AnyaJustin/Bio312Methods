@@ -1,0 +1,26 @@
+cd ~/labs
+git clone https://github.com/Bio312/lab5-L2AnyaJustin
+cd lab5-L2AnyaJustin
+ls
+pwd
+gunzip proteomes/*.gz
+cat  proteomes/* > allprotein.fas
+makeblastdb -in allprotein.fas -parse_seqids -dbtype prot
+ncbi-acc-download -F fasta -m protein XP_032222766.1
+blastp -db allprotein.fas -query XP_032222766.1.fa -outfmt 0 -max_hsps 1 -out maguk.blastp.typical.out
+less maguk.blastp.typical.out
+blastp -db allprotein.fas -query XP_032222766.1.fa -outfmt "6 sseqid pident length mismatch gapopen evalue bitscore pident stitle"  -max_hsps 1 -out maguk.blastp.detail.out
+less maguk.blastp.typical.out
+less maguk.blastp.detail.out
+awk '{if ($6<0.00000000000001)print $1 }' maguk.blastp.detail.out > maguk.blastp.detail.filtered.out
+wc -l maguk.blastp.detail.filtered.out
+seqkit grep --pattern-file maguk.blastp.detail.filtered.out allprotein.fas > maguk.blastp.detail.filtered.fas
+nano
+nano maguk.blastp.detail.filtered.fas
+muscle -in maguk.blastp.detail.filtered.fas -out maguk.blastp.detail.filtered.aligned.fas
+t_coffee -other_pg seq_reformat -in maguk.blastp.detail.filtered.aligned.fas -output sim
+alv -k maguk.blastp.detail.filtered.aligned.fas | less -r 
+alv -kli --majority maguk.blastp.detail.filtered.aligned.fas | less -RS
+t_coffee -other_pg seq_reformat -in maguk.blastp.detail.filtered.aligned.fas -action +rm_gap 50 -out maguk.blastp.detail.filtered.aligned.r50.fas
+alv -kli --majority maguk.blastp.detail.filtered.aligned.r50.fas | less -RS
+history > lab5.commandhistory.txt
